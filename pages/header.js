@@ -12,14 +12,18 @@ function Head() {
             <Link href='/index'>
                 <a className="navbar-brand">IMDB</a>
             </Link>
-            {/* <ul className="nav navbar-nav">
-                <li className="active">
-                    <a href="#">Đăng nhập</a>
+            <ul className="nav navbar-nav">
+                <li>
+                    <Link href='/about'>
+                        <a href="#">About</a>
+                    </Link>
                 </li>
                 <li>
-                    <a href="#">Đăng ký</a>
+                    <Link href='/bookmark'>
+                        <a href="#">Bookmark</a>
+                    </Link>
                 </li>
-            </ul> */}
+            </ul>
         </nav>
 
     </div>
