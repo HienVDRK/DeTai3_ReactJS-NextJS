@@ -2,42 +2,32 @@ import React, { Component } from 'react'
 import Head from './header';
 import fetch from 'isomorphic-unfetch'
 import Link from 'next/link'
+import Footer from './footer'
+
 class Search extends Component {
     constructor(props) {
         super(props);
-        this.state = { txtTieuDePhim: "" }
+        this.state = { txtTieuDePhim: ""}
     }
 
     onChange = (event) => {
-        // var target = event.target;
-        // var name = target.name;
-        // var value = target.value;
-        // this.setState({
-        //     [name]: value
-        // })
+        var target = event.target;
+        var name = target.name;
+        var value = target.value;
+        this.setState({
+            [name]: value
+        })
+     }
 
-        this.setState({txtTieuDePhim: event.target.value})
-    }
-    onSubmit = async (event) => {
+    onSubmit = (event) => {
         event.preventDefault();
-        this.getInitialProps();
-    }
-     getInitialProps = async () => {
-        var txtTieuDe =  this.state.txtTieuDePhim;
-        console.log('txtTieuDe--------', txtTieuDe);
-        const res = await fetch(`http://www.omdbapi.com/?s=${txtTieuDe}&apikey=dd31b83b`)
-        const data = await res.json()
-        console.log('data-------', data);
-        return {
-            data: data
-        }
     }
 
-    render() {
+    render(){
         const css_search = { cursor: 'pointer', fontWeight: 'bold' };
-        console.log('this.props.data', this.props.data)
+        console.log('this.props.data', this.props.data);
         let show_Ketqua;
-        if (this.props.data == "undefined" || this.props.data == undefined) {
+        if (this.props.data == undefined || this.props.data.Response == "False") {
             console.log('vao day')
             show_Ketqua = (
                 <div><h4>Không có kết quả nào</h4></div>
@@ -53,9 +43,9 @@ class Search extends Component {
                     </div>
                     <div className="row">
                         {this.props.data.Search.map((show, index) => (
-                            <div className="col-xs-3 col-sm-3 col-md-3 col-lg-3" key={index}>
+                            <div className="col-xs-3 col-sm-3 col-md-3 col-lg-3" key={index} style={{ height: 490}}>
                                 <Link as={`/detail/${show.imdbID}`} href={{ pathname: '/detail', query: { keyword_id: `${show.imdbID}` } }}>
-                                    <img src={show.Poster} style={{ height: 350, cursor: 'pointer' }} alt="Image" />
+                                    <img src={show.Poster} style={{ height: 350, width: 250, cursor: 'pointer' }} alt="Image" />
                                 </Link>
                                 <br />
                                 <div style={{ height: 100 }}>
@@ -70,7 +60,7 @@ class Search extends Component {
                     </div>
                 </div>
             )
-        }
+         }
 
         return <div className="container">
             <Head />
@@ -87,17 +77,18 @@ class Search extends Component {
             </form>
             <br />
             {show_Ketqua}
+            <Footer/>
         </div>
     }
 }
 
-// Search.getInitialProps = async function () {
-//     const res = await fetch(`http://www.omdbapi.com/?s=${tukhoa}&apikey=dd31b83b`)
-//     const data = await res.json()
-//     return {
-//         data: data
-//     }
-// }
+Search.getInitialProps = async function (context) {
+    const res = await fetch(`http://www.omdbapi.com/?s=move&apikey=dd31b83b`)
+    const data = await res.json()
+    return {
+        data: data
+    }
+}
 
 
 export default Search

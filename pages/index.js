@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import fetch from 'isomorphic-unfetch'
 import Head from './header'
+import Footer from './footer'
 
 function Index(props) {
     const css_search = {cursor: 'pointer', fontWeight: 'bold'}
@@ -21,10 +22,10 @@ function Index(props) {
         </div>
         <div className="row">
             {props.data.Search.map((show, index) => (
-                <div className="col-xs-3 col-sm-3 col-md-3 col-lg-3" key={index}>
+                <div className="col-xs-3 col-sm-3 col-md-3 col-lg-3" key={index} style={{ height: 490}}>
                     {/* <Link as={`/detail/${show.imdbID}`} href={`/detail?id=${show.imdbID}`}> */}
                     <Link as={`/detail/${show.imdbID}`} href={{ pathname: '/detail', query: { keyword_id: `${show.imdbID}` }}}>
-                        <img src={show.Poster} style={{ height: 350, cursor: 'pointer' }} alt="Image" />
+                        <img src={show.Poster} style={{ height: 350, width: 250, cursor: 'pointer' }} alt="Image" />
                     </Link>
                     <br/>
                     <div style={{ height: 100 }}>
@@ -37,7 +38,9 @@ function Index(props) {
                 </div>
                 ))}
         </div>
+        <Footer />
     </div>
+
 }
 
 Index.getInitialProps = async function () {
