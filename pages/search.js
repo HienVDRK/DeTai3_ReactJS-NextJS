@@ -1,13 +1,13 @@
 import React, { Component } from 'react'
 import Head from './header';
-import fetch from 'isomorphic-unfetch'
 import Link from 'next/link'
 import Footer from './footer'
+import axios from 'axios'
 
 class Search extends Component {
     constructor(props) {
         super(props);
-        this.state = { txtTieuDePhim: ""}
+        this.state = { txtTieuDePhim: "", fetchData: "" }
     }
 
     onChange = (event) => {
@@ -19,30 +19,37 @@ class Search extends Component {
         })
      }
 
-    onSubmit = (event) => {
+     onSubmit = async (event) => {
         event.preventDefault();
+        this.setState({fetchData : await this.getInitialProps()});
+    }
+
+    getInitialProps = async () => {
+        const response = await axios.get(`http://www.omdbapi.com/?s=batman&apikey=dd31b83b`)
+        const data = await response.data
+        return {
+            data: data
+        }
     }
 
     render(){
         const css_search = { cursor: 'pointer', fontWeight: 'bold' };
-        console.log('this.props.data', this.props.data);
+        let data = this.state.fetchData ? this.state.fetchData : this.props.data ;
         let show_Ketqua;
-        if (this.props.data == undefined || this.props.data.Response == "False") {
-            console.log('vao day')
+        if (data == undefined || data.data.Response == "False") {
             show_Ketqua = (
-                <div><h4>Không có kết quả nào</h4></div>
+                <div><h4>Không có kết quả nào được tìm thấy</h4></div>
             )
         } else {
-            console.log('day du')
             show_Ketqua = (
                 <div>
                     <div className="row">
                         <div className="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-                            <h4>Số kết quả tìm được: {this.props.data.Search.length}</h4>
+                            <h4>Số kết quả tìm được: {data.data.Search.length}</h4>
                         </div>
                     </div>
-                    <div className="row">
-                        {this.props.data.Search.map((show, index) => (
+                    <div className="row" >
+                        {data.data.Search.map((show, index) => (
                             <div className="col-xs-3 col-sm-3 col-md-3 col-lg-3" key={index} style={{ height: 490}}>
                                 <Link as={`/detail/${show.imdbID}`} href={{ pathname: '/detail', query: { keyword_id: `${show.imdbID}` } }}>
                                     <img src={show.Poster} style={{ height: 350, width: 250, cursor: 'pointer' }} alt="Image" />
@@ -81,14 +88,5 @@ class Search extends Component {
         </div>
     }
 }
-
-Search.getInitialProps = async function (context) {
-    const res = await fetch(`http://www.omdbapi.com/?s=move&apikey=dd31b83b`)
-    const data = await res.json()
-    return {
-        data: data
-    }
-}
-
 
 export default Search

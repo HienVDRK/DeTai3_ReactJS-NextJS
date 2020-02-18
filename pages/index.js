@@ -8,7 +8,7 @@ function Index(props) {
     return <div className="container">
         <Head />
         <h1 className="text-center">
-                Danh sách bộ phim trên IMDb
+                Danh sách bộ phim trên IMDB
         </h1>
         <hr/>
         <Link href='/search'>
