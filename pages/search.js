@@ -25,7 +25,8 @@ class Search extends Component {
     }
 
     getInitialProps = async () => {
-        const response = await axios.get(`http://www.omdbapi.com/?s=batman&apikey=dd31b83b`)
+        let tukhoa = this.state.txtTieuDePhim;
+        const response = await axios.get(`http://www.omdbapi.com/?s=${tukhoa}&apikey=dd31b83b`)
         const data = await response.data
         return {
             data: data
@@ -48,7 +49,7 @@ class Search extends Component {
                             <h4>Số kết quả tìm được: {data.data.Search.length}</h4>
                         </div>
                     </div>
-                    <div className="row" >
+                    <div className="row">
                         {data.data.Search.map((show, index) => (
                             <div className="col-xs-3 col-sm-3 col-md-3 col-lg-3" key={index} style={{ height: 490}}>
                                 <Link as={`/detail/${show.imdbID}`} href={{ pathname: '/detail', query: { keyword_id: `${show.imdbID}` } }}>

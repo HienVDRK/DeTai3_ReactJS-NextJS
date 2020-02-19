@@ -14,18 +14,18 @@ function Head() {
             </Link>
             <ul className="nav navbar-nav">
                 <li>
-                    <Link href='/about'>
-                        <a href="#">About</a>
-                    </Link>
-                </li>
-                <li>
                     <Link href='/bookmark'>
                         <a href="#">Bookmark</a>
                     </Link>
                 </li>
+                <li>
+                    <Link href='/about'>
+                        <a href="#">About</a>
+                    </Link>
+                </li>
             </ul>
         </nav>
-
+        
     </div>
 }
 export default Head        
