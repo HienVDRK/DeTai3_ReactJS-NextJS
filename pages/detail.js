@@ -1,34 +1,47 @@
 import Link from 'next/link'
 import Layout from '../src/layouts/DefaultLayout'
 import styles from '../src/styles/styles.module.css'
-import axios from 'axios'
 import { getDetailFilmsById } from '../src/service/service'
 
 function Detail(props) {
   let btnBookmark
-  const objFilms = JSON.parse(localStorage.getItem("imdbID"))
+  const getBookmarkLocalStorage = JSON.parse(localStorage.getItem("BookmarkFilms"))
+  let objFilms
 
   function addBookmark() {
-    if (objFilms && objFilms.some(film => film.id === props.data.imdbID)) {
+    if (JSON.parse(localStorage.getItem("BookmarkFilms")) === null) {
+      objFilms = [];
+    } else {
+      objFilms = JSON.parse(localStorage.getItem("BookmarkFilms"))
+    }
+    
+    if (objFilms && objFilms.some(film => film.imdbID === props.data.imdbID)) {
       alert(`Phim ${props.data.Title} đã bookmark rồi!`)
     }
     else {
       objFilms.push({
-        id: props.data.imdbID,
-        title: props.data.Title,
-        poster: props.data.Poster,
-        year: props.data.Year,
-        type: props.data.Type
+        imdbID: props.data.imdbID,
+        Title: props.data.Title,
+        Poster: props.data.Poster,
+        Year: props.data.Year,
+        Type: props.data.Type
       });
-      localStorage.setItem("imdbID", JSON.stringify(objFilms))
+      localStorage.setItem("BookmarkFilms", JSON.stringify(objFilms))
       alert(`Thêm bookmark ${props.data.Title} thành công!`)
     }
   }
 
-  if (objFilms && objFilms.some(arr => arr.id === props.data.imdbID)) {
+  function removeBookmark() {
+    const index = getBookmarkLocalStorage.findIndex(film => film.imdbID == props.data.imdbID);
+    getBookmarkLocalStorage.splice(index, 1)
+    localStorage.setItem('BookmarkFilms', JSON.stringify(getBookmarkLocalStorage));
+    alert(`Xóa bookmark ${props.data.Title} thành công!`)
+  }
+
+  if (getBookmarkLocalStorage && getBookmarkLocalStorage.some(film => film.imdbID === props.data.imdbID)) {
     btnBookmark = (
       <div>
-        <h4>Đã thêm vào bookmark</h4>
+        <button type="button" onClick={removeBookmark} className="btn btn-danger">Xóa Bookmark</button><br /><br />
       </div>
     )
   }

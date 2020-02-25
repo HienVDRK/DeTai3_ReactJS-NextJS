@@ -1,8 +1,7 @@
 import Link from 'next/link'
 import Layout from '../src/layouts/DefaultLayout'
-import styles from '../src/styles/styles.module.css'
-import axios from 'axios'
 import { getFilmsByTitle } from '../src/service/service'
+import ListFilm from '../src/components/ListFilms'
 
 function Index(props) {
     return (
@@ -21,20 +20,8 @@ function Index(props) {
                 </div>
             </div>
             <div className="row">
-                {props.data.Search.map((show, index) => (
-                    <div className="col-xs-3 col-sm-3 col-md-3 col-lg-3" key={index} style={{ height: 490 }}>
-                        <Link as={`/detail/${show.imdbID}`} href={{ pathname: '/detail', query: { idFilm: `${show.imdbID}` } }}>
-                            <img src={show.Poster} style={{ height: 350, width: 250, cursor: 'pointer' }} alt="Image" />
-                        </Link>
-                        <br />
-                        <div style={{ height: 100 }}>
-                            <Link as={`/detail/${show.imdbID}`} href={{ pathname: '/detail', query: { idFilm: `${show.imdbID}` } }}>
-                                <h4 className={styles.title_films}>{show.Title}</h4>
-                            </Link>
-                            <h5>Năm ra mắt: {show.Year}</h5>
-                            <h5>Thể loại: {show.Type}</h5>
-                        </div>
-                    </div>
+                {props.data.Search.map((value, index) => (
+                    <ListFilm value={value} key={index} />
                 ))}
             </div>
         </Layout>
@@ -42,13 +29,11 @@ function Index(props) {
 }
 
 Index.getInitialProps = async () => {
-    let getFilms = await getFilmsByTitle("episode")
+    let titleFilm = "episode";
+    let getFilms = await getFilmsByTitle(titleFilm)
     return {
         data: getFilms
     }
-    // const response = await axios.get(`http://www.omdbapi.com/?s=episode&apikey=dd31b83b`)
-    // const data = await response.data
-
 }
 
 export default Index

@@ -1,9 +1,7 @@
 import React, { Component } from 'react'
-import Link from 'next/link'
-import axios from 'axios'
 import Layout from '../src/layouts/DefaultLayout'
-import styles from '../src/styles/styles.module.css'
 import { getFilmsByTitle } from '../src/service/service'
+import ListFilm from '../src/components/ListFilms'
 
 class Search extends Component {
     constructor(props) {
@@ -56,20 +54,8 @@ class Search extends Component {
                         </div>
                     </div>
                     <div className="row">
-                        {data.Search.map((show, index) => (
-                            <div className="col-xs-3 col-sm-3 col-md-3 col-lg-3" key={index} style={{ height: 490}}>
-                                <Link as={`/detail/${show.imdbID}`} href={{ pathname: '/detail', query: { idFilm: `${show.imdbID}` } }}>
-                                    <img src={show.Poster} className={styles.poster} alt="Image" />
-                                </Link>
-                                <br />
-                                <div style={{ height: 100 }}>
-                                    <Link as={`/detail/${show.imdbID}`} href={{ pathname: '/detail', query: { idFilm: `${show.imdbID}` } }}>
-                                        <h4 className={styles.title_films}>{show.Title}</h4>
-                                    </Link>
-                                    <h5>Năm ra mắt: {show.Year}</h5>
-                                    <h5>Thể loại: {show.Type}</h5>
-                                </div>
-                            </div>
+                        {data.Search.map((value, index) => (
+                             <ListFilm value={value} key={index}/>
                         ))}
                     </div>
                 </div>
